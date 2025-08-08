@@ -18,15 +18,54 @@ import sys
 #  3. INTEGER_ARRAY endIndices
 #
 
-def countItems(s, start, end):
-    return s[start - 1: end].strip('*').count('*')
-
 def numberOfItems(s, startIndices, endIndices):
     # Write your code here
-    n = len(startIndices)
+    
+    # Time Complexity: O(n + m) where n = number of queries, m = length of string
+    # Space Complexity: O(m) for storing prefix sums and pipe positions
+    
+    m = len(s)
+    
+    # Precompute prefix sums for items
+    item_prefix = [0] * (m + 1)
+    for i in range(m):
+        item_prefix[i + 1] = item_prefix[i] + (1 if s[i] == '*' else 0)
+    
+    # Precompute next pipe positions (from left to right)
+    next_pipe = [m] * m
+    last_pipe_pos = m
+    for i in range(m - 1, -1, -1):
+        if s[i] == '|':
+            last_pipe_pos = i
+        next_pipe[i] = last_pipe_pos
+    
+    # Precompute previous pipe positions (from right to left)
+    prev_pipe = [-1] * m
+    first_pipe_pos = -1
+    for i in range(m):
+        if s[i] == '|':
+            first_pipe_pos = i
+        prev_pipe[i] = first_pipe_pos
+    
     result = []
-    for i in range(n):
-        result.append(countItems(s, startIndices[i], endIndices[i]))
+    for i in range(len(startIndices)):
+        start_idx = startIndices[i] - 1  # Convert to 0-based
+        end_idx = endIndices[i] - 1
+        
+        # Find the first pipe >= start_idx
+        first_pipe_idx = next_pipe[start_idx]
+        
+        # Find the last pipe <= end_idx
+        last_pipe_idx = prev_pipe[end_idx]
+        
+        # If no valid pipes found, return 0
+        if first_pipe_idx >= m or last_pipe_idx < 0 or first_pipe_idx >= last_pipe_idx:
+            result.append(0)
+        else:
+            # Count items between the pipes using prefix sums
+            count = item_prefix[last_pipe_idx] - item_prefix[first_pipe_idx + 1]
+            result.append(count)
+    
     return result
 
 if __name__ == '__main__':
