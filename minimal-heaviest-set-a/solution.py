@@ -6,8 +6,6 @@ import random
 import re
 import sys
 
-
-
 #
 # Complete the 'minimalHeaviestSetA' function below.
 #
@@ -16,18 +14,8 @@ import sys
 #
 
 def minimalHeaviestSetA(arr):
-    arr.sort()
-    a = 0
-    b = sum(arr)
-    n = len(arr)
-    for i in range(n - 1, -1, -1):
-        item = arr[i]
-        a += item
-        b -= item
-        if a > b:
-            return arr[i:]
-        
     # Write your code here
+    pass
 
 if __name__ == '__main__':
     fptr = open(os.environ['OUTPUT_PATH'], 'w')
