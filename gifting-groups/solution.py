@@ -17,7 +17,37 @@ import sys
 
 def countGroups(related):
     # Write your code here
-    pass
+
+    def dfs(i):
+        if i in seen:
+            return 0
+        
+        seen.add(i)
+        
+        for j in graph[i]:
+            dfs(j)
+
+        return 1
+        
+        
+    seen = set()
+    from collections import defaultdict
+    graph = defaultdict(list)
+
+    n = len(related)
+    m = len(related[0])
+
+    for i in range(n):
+        for j in range(m):
+            if related[i][j] == '1':
+                graph[i].append(j)
+
+    total = 0
+    for i in range(n):
+        total += dfs(i)
+
+    return total
+    
 
 if __name__ == '__main__':
     fptr = open(os.environ['OUTPUT_PATH'], 'w')
