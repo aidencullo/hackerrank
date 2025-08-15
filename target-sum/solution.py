@@ -33,6 +33,15 @@ def target_sum(nums, target):
             result.append(path[:])
             return
         
+        # Early termination bounds checking
+        if curr_sum > target:
+            return
+        
+        # Check if remaining numbers can reach target
+        remaining_sum = sum(nums[start:])
+        if curr_sum + remaining_sum < target:
+            return
+        
         for i in range(start, len(nums)):
             if curr_sum + nums[i] > target:
                 break
