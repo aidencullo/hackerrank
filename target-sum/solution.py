@@ -1,3 +1,22 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+
+
+#
+# Complete the 'findOptimalSequence' function below.
+#
+# The function is expected to return an INTEGER_ARRAY.
+# The function accepts following parameters:
+#  1. INTEGER size
+#  2. LONG_INTEGER target_sum
+#
+
 def target_sum(nums, target):
     """
     Find all unique combinations of numbers that sum to the target value.
@@ -9,8 +28,22 @@ def target_sum(nums, target):
     Returns:
         List of lists containing valid combinations
     """
-    # TODO: Implement solution
-    pass
+    def backtrack(start, curr_sum, path):
+        if curr_sum == target:
+            result.append(path[:])
+            return
+        
+        for i in range(start, len(nums)):
+            if curr_sum + nums[i] > target:
+                break
+            path.append(nums[i])
+            backtrack(i, curr_sum + nums[i], path)
+            path.pop()
+    
+    nums.sort()  # Sort to avoid duplicates and optimize
+    result = []
+    backtrack(0, 0, [])
+    return result
 
 
 def main():
